@@ -7,7 +7,7 @@ export default function Home() {
       title: 'Simple Personality Test',
       description: 'Discover your personality type',
       icon: '🎯',
-      href: '/personality/simple',
+      href: '/psych-test',
       color: 'from-pink-400 to-rose-400',
     },
     {
