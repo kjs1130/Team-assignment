@@ -21,7 +21,7 @@ export default function Home() {
       title: 'Mood & Task Suggestions',
       description: 'Get personalized recommendations',
       icon: '✨',
-      href: '/mood-advice',
+      href: '/mood-suggestions',
       color: 'from-blue-400 to-cyan-400',
     },
     {
