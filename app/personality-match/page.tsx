@@ -789,12 +789,12 @@ export default function MBTIMatch() {
               {currentQuestion.question}
             </h3>
             <div className="space-y-4">
-              {currentQuestion.options.map((option: { value: string; label: string }) => (
+              {currentQuestion.options.map((option: { value: string; label: string }, index: number) => (
                 <button
-                  key={option.value}
+                  key={index}
                   onClick={() => handleAnswer(option.label)}
                   className={`w-full text-left p-4 rounded-lg border transition-all duration-200 ${
-                    answers[currentQuestion.id] === option.value
+                    answers[currentQuestion.id] === option.label
                       ? 'border-purple-500 bg-purple-50'
                       : 'border-gray-200 hover:border-purple-500 hover:bg-purple-50'
                   }`}
