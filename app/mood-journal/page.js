@@ -2,7 +2,7 @@
 
 <div className="mt-10"></div>
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import {
   collection,
@@ -26,7 +26,15 @@ export default function MoodJournal() {
   const [mood, setMood] = useState(5);
   const [note, setNote] = useState('');
   const [moodEntries, setMoodEntries] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [entries, setEntries] = useState([]);
+  const [newEntry, setNewEntry] = useState('');
+  const [filterMood, setFilterMood] = useState('All');
+  const [editingId, setEditingId] = useState(null);
+  const [editContent, setEditContent] = useState('');
+  const [editMood, setEditMood] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const messagesEndRef = useRef(null);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -54,7 +62,6 @@ export default function MoodJournal() {
         console.error('Error loading entries:', error);
       }
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -84,7 +91,6 @@ export default function MoodJournal() {
       // Reset and reload
       setNote('');
       setMood(5);
-      setIsLoading(true);
       await loadEntries();
     } catch (error) {
       console.error('Error saving entry:', error);

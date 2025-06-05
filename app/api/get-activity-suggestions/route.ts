@@ -24,8 +24,12 @@ Give the answer as a simple list.
     console.log('Gemini Response:', text);
 
     return NextResponse.json({ recommendations: text || 'No recommendations found.' });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error during Gemini API call:', error);
-    return NextResponse.json({ recommendations: `Error: ${error?.message || 'Failed to get recommendations.'}` });
+    let errorMessage = 'Failed to get recommendations.';
+    if (error instanceof Error) {
+      errorMessage = `Error: ${error.message}`;
+    }
+    return NextResponse.json({ recommendations: errorMessage });
   }
 }

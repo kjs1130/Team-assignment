@@ -5,14 +5,14 @@ console.log('Full process.env:', process.env);
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-console.log('GOOGLE_GEMINI_API_KEY loaded:', !!process.env.GOOGLE_GEMINI_API_KEY);
-console.log('GOOGLE_GEMINI_API_KEY value:', process.env.GOOGLE_GEMINI_API_KEY ? '[KEY_LOADED]' : '[NOT_LOADED]');
+console.log('GEMINI_API_KEY loaded:', !!process.env.GEMINI_API_KEY);
+console.log('GEMINI_API_KEY value:', process.env.GEMINI_API_KEY ? '[KEY_LOADED]' : '[NOT_LOADED]');
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 // API 키 검증
-if (!process.env.GOOGLE_GEMINI_API_KEY) {
-  throw new Error('GOOGLE_GEMINI_API_KEY is not configured');
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error('GEMINI_API_KEY is not configured');
 }
 
 export async function POST(request: Request) {
@@ -37,12 +37,10 @@ export async function POST(request: Request) {
     });
 
     // 시스템 프롬프트 추가
-    const systemPrompt = `당신은 심리 상담사입니다. 사용자의 이야기를 듣고 공감하며, 
-    마지막에는 "##심리 분석 결과:##"로 시작하는 심리 분석을 제공해주세요. 
-    분석은 공감적이고 전문적이어야 합니다.`;
+    const systemPrompt = `You are a psychological counselor. Listen empathetically to the user's story about their day and feelings. After they have shared, provide a psychological analysis starting with "##심리 분석 결과:##", followed by empathetic insights and actionable suggestions for what they can do. Ensure your initial response is an open-ended question asking about their day and how they feel.`;
 
     // 첫 메시지에 시스템 프롬프트 포함
-    const result = await chat.sendMessage(`${systemPrompt}\n\n${message}`);
+    const result = await chat.sendMessage(message);
     const aiResponseContent = result.response.text();
 
     // 응답 형식 통일

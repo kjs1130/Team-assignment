@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRightIcon, SparklesIcon, ChartBarIcon, HeartIcon } from '@heroicons/react/24/outline'
+import { SparklesIcon, HeartIcon } from '@heroicons/react/24/outline'
 
 const questions = [
   {

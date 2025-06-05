@@ -24,12 +24,18 @@ export default function PsychTest() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Add initial AI message on component mount
+  useEffect(() => {
+    setMessages([{ role: 'ai', content: 'Hello! How are you feeling today and what happened?' }]);
+  }, []); // Empty dependency array ensures this runs only once on mount
+
   const sendMessage = async () => {
     if (input.trim() === '' || loading || cooldown || !!analysis) return;
 
     const userMessage: Message = { role: 'user', content: input };
     // 이전 대화 기록을 Gemini API 역할에 맞게 변환
-    const historyForGemini = messages.map(msg => ({
+    // AI의 첫 질문(messages[0])은 history에서 제외합니다.
+    const historyForGemini = messages.slice(1).map(msg => ({
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.content }]
     }));
@@ -97,17 +103,17 @@ export default function PsychTest() {
         className="max-w-3xl mx-auto w-full bg-white rounded-2xl shadow-xl p-6 flex flex-col flex-grow"
       >
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-blue-600">AI 심리 대화</h2>
+          <h2 className="text-3xl font-bold text-blue-600">AI Psychological Chat</h2>
           <Link
             href="/"
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-600 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <HomeIcon className="h-5 w-5 mr-2" />
-            메인으로
+            Home
           </Link>
         </div>
         <p className="text-lg text-gray-700 mb-6 text-center">
-          AI와 짧은 대화를 통해 당신의 심리 상태를 알아보세요.
+          Talk briefly with the AI to understand your psychological state.
         </p>
 
         {/* 대화 영역 */}
@@ -124,15 +130,15 @@ export default function PsychTest() {
                 <div
                   className={`max-w-[70%] p-3 rounded-lg ${
                     msg.role === 'user'
-                      ? 'bg-blue-500 text-white rounded-br-none' // 사용자 메시지
-                      : 'bg-gray-200 text-gray-800 rounded-bl-none' // AI 메시지
+                      ? 'bg-blue-500 text-white rounded-br-none' // User message
+                      : 'bg-gray-200 text-gray-800 rounded-bl-none' // AI message
                   }`}
                 >
                   {msg.content}
                 </div>
               </motion.div>
             ))}
-             {loading && ( // 로딩 인디케이터
+             {loading && ( // Loading indicator
                 <motion.div
                   key="loading-indicator"
                   initial={{ opacity: 0 }}
@@ -141,11 +147,11 @@ export default function PsychTest() {
                   className="flex justify-start"
                 >
                    <div className="max-w-[70%] p-3 rounded-lg bg-gray-200 text-gray-800 rounded-bl-none">
-                     AI가 생각 중입니다...
+                     AI is thinking...
                    </div>
                 </motion.div>
              )}
-             <div ref={messagesEndRef} /> {/* 자동 스크롤을 위한 요소 */}
+             <div ref={messagesEndRef} /> {/* Element for auto-scrolling */}
           </AnimatePresence>
         </div>
 
@@ -156,20 +162,20 @@ export default function PsychTest() {
              animate={{ opacity: 1, y: 0 }}
              className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6"
           >
-             <h3 className="text-xl font-semibold text-yellow-700 mb-3">AI 심리 분석 결과:</h3>
+             <h3 className="text-xl font-semibold text-yellow-700 mb-3">AI Psychological Analysis Result:</h3>
              <p className="text-gray-800 whitespace-pre-wrap">{analysis}</p>
           </motion.div>
         )}
 
         {/* 입력 영역 */}
-        {!analysis && ( // 분석 결과가 나오면 입력창 숨김
+        {!analysis && ( // Hide input when analysis result is shown
             <div className="flex">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder={loading ? '메시지를 입력할 수 없습니다.' : '메시지를 입력하세요...'}
+                placeholder={loading ? 'Cannot enter message.' : 'Enter message...'}
                 className="flex-grow px-4 py-2 border border-gray-300 rounded-l-md focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50"
                 disabled={loading || cooldown || !!analysis}
               />

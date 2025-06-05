@@ -48,7 +48,7 @@ export default function MoodSuggestionsPage() {
         </h1>
 
         <p className="text-center mb-4 text-gray-600">
-          Select how you're feeling right now:
+          Select how you&apos;re feeling right now:
         </p>
 
         <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 mb-8">
