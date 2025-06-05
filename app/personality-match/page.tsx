@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { CheckCircleIcon, XCircleIcon, HomeIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
@@ -559,9 +559,13 @@ export default function MBTIMatch() {
     userType: string
     testType: string
   } | null>(null)
+  const [myMbti, setMyMbti] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
-  const myMbti = searchParams.get('myMbti');
+
+  useEffect(() => {
+    setMyMbti(searchParams.get('myMbti'));
+  }, [searchParams]);
 
   const handlePreviousQuestion = () => {
     const category = mbtiQuestions[currentCategory]
