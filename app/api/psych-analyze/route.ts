@@ -5,6 +5,12 @@ console.log('Full process.env:', process.env);
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
+// Define interface for the request body
+interface PsychAnalyzeRequest {
+  message: string;
+  history?: { role: string; content: string }[]; // history is optional
+}
+
 console.log('GEMINI_API_KEY loaded:', !!process.env.GEMINI_API_KEY);
 console.log('GEMINI_API_KEY value:', process.env.GEMINI_API_KEY ? '[KEY_LOADED]' : '[NOT_LOADED]');
 
@@ -17,7 +23,8 @@ if (!process.env.GEMINI_API_KEY) {
 
 export async function POST(request: Request) {
   try {
-    const { message, history } = await request.json();
+    // Type the incoming request body
+    const { message, history }: PsychAnalyzeRequest = await request.json();
 
     if (!message) {
       return NextResponse.json(
@@ -30,16 +37,16 @@ export async function POST(request: Request) {
 
     // 대화 세션 시작
     const chat = model.startChat({
-      history: history ? history.map((msg: any) => ({
+      history: history ? history.map((msg: { role: string; content: string }) => ({
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.content }]
-      })) : [],
+      })) : [], // eslint-disable-line @typescript-eslint/no-explicit-any
     });
 
-    // 시스템 프롬프트 추가
-    const systemPrompt = `You are a psychological counselor. Listen empathetically to the user's story about their day and feelings. After they have shared, provide a psychological analysis starting with "##심리 분석 결과:##", followed by empathetic insights and actionable suggestions for what they can do. Ensure your initial response is an open-ended question asking about their day and how they feel.`;
+    // Removed unused systemPrompt variable
+    // const systemPrompt = `You are a psychological counselor...`;
 
-    // 첫 메시지에 시스템 프롬프트 포함
+    // Send only the user's message
     const result = await chat.sendMessage(message);
     const aiResponseContent = result.response.text();
 
