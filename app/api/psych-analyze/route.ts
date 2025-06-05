@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       history: history ? history.map((msg: { role: string; content: string }) => ({
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.content }]
-      })) : [], // eslint-disable-line @typescript-eslint/no-explicit-any
+      })) : [],
     });
 
     // Removed unused systemPrompt variable

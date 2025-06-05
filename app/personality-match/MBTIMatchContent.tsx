@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { CheckCircleIcon, XCircleIcon, HomeIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
