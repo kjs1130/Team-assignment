@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRightIcon, CheckCircleIcon, XCircleIcon, HomeIcon } from '@heroicons/react/24/outline'
+import { CheckCircleIcon, XCircleIcon, HomeIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 

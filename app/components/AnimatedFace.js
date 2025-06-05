@@ -57,6 +57,11 @@ export default function AnimatedFace({ mood }) {
     }
   }, [mood]);
 
+  useEffect(() => {
+    // Update face expression when mood changes
+    updateFaceExpression(mood);
+  }, [mood]);
+
   return (
     <div
       ref={containerRef}

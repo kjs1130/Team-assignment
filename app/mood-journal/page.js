@@ -57,7 +57,7 @@ export default function MoodJournal() {
 
   useEffect(() => {
     loadEntries();
-  }, [session, status]);
+  }, [session, status, loadEntries]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
