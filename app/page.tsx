@@ -4,8 +4,8 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 export default function Home() {
   const features = [
     {
-      title: 'Simple Personality Test',
-      description: 'Discover your personality type',
+      title: 'AI Psychological Chat',
+      description: 'Chat with AI to get psychological analysis',
       icon: '🎯',
       href: '/psych-test',
       color: 'from-pink-400 to-rose-400',
